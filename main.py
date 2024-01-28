@@ -19,7 +19,7 @@ def get_link(movie_or_tvshow):
             item_url = link.find("a", class_="title-list-grid__item--link")["href"]
             urls_list.append(item_url)
             count += 1
-            if count == 50:  # <--- Number of movies or tvshow data scraped
+            if count == 5:  # <--- Number of movies or tvshow data scraped
                 break
         return urls_list
     else:
@@ -69,7 +69,7 @@ def get_data(url):
             "Title": title,
             "Year": year,
             "Genres": genres,
-            "Imdb": rating_imdb,
+            "Imdb": float(rating_imdb),
             "Streaming": streaming,
             "URL": url,
         }
@@ -107,6 +107,9 @@ def create_excel():
     timer = round(time.time() - start_time, 2)
     timer = time.strftime("%M:%S", time.gmtime(timer))
     print(f"The process has been completed.\nTime Taken :{timer}")
+
+    print(f'Average Movie Imbd : {movie_dataframe['Imdb'].mean(numeric_only=True,skipna=True)}')
+    print(f'Average TvShow Imbd : {tvshow_dataframe['Imdb'].mean(numeric_only=True,skipna=True)}')
 
 
 print("Collecting Data...Please Wait...")
