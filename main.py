@@ -19,7 +19,7 @@ def get_link(movie_or_tvshow):
             item_url = link.find("a", class_="title-list-grid__item--link")["href"]
             urls_list.append(item_url)
             count += 1
-            if count == 5:  # <--- Number of movies or tvshow data scraped
+            if count == 50:  # <--- Number of movies or tvshow data scraped
                 break
         return urls_list
     else:
@@ -34,21 +34,36 @@ def get_data(url):
         html = response.text
         soup = BeautifulSoup(html, "lxml")
 
-        title = soup.find("h1").text
+        try:
+            title = soup.find("h1").text
+        except:
+            title = None
 
-        year = soup.find("span", class_="text-muted").text.strip()[1:-1]
+        try:
+            year = soup.find("span", class_="text-muted").text.strip()[1:-1]
+        except:
+            year = None
 
-        genres = soup.find("h3", string="Genres").find_next("div").text
+        try:
+            genres = soup.find("h3", string="Genres").find_next("div").text
+        except:
+            genres=None
 
-        rating_imdb = (
-            soup.find_all("div", class_="jw-scoring-listing__rating")[1]
-            .div.span.span.text.strip()
-            .split()[0]
-        )
+        try:
+            rating_imdb = (
+                soup.find_all("div", class_="jw-scoring-listing__rating")[1]
+                .div.span.span.text.strip()
+                .split()[0]
+           )
+        except:
+            rating_imdb = None
 
-        streaming = soup.find("p", attrs={"data-v-3f103c69": True}).text.partition(
-            " on "
-        )[2]
+        try:
+            streaming = soup.find("p", attrs={"data-v-3f103c69": True}).text.partition(
+                " on "
+            )[2]
+        except:
+            streaming = None
 
         data_dict = {
             "Title": title,
